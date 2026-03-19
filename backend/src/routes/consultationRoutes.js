@@ -87,4 +87,27 @@ router.get(
   }
 );
 
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const consultation = await Consultation.findById(id);
+
+    if (!consultation) {
+      return res.status(404).json({ error: "Consulta não encontrada" });
+    }
+
+    if (consultation.user.toString() !== req.user.id) {
+      return res.status(403).json({ error: "Não autorizado" });
+    }
+
+    await consultation.deleteOne();
+
+    res.json({ message: "Consulta cancelada com sucesso" });
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
