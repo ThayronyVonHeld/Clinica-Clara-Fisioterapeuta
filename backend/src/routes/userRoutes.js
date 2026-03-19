@@ -19,8 +19,13 @@ router.post("/", async (req, res) => {
 
     res.status(201).json(user);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+     if (error.code === 11000) {
+    return res.status(400).json({ error: "Email já cadastrado" });
   }
+
+  res.status(500).json({ error: error.message });
+  }
+  
 });
 
 export default router;
