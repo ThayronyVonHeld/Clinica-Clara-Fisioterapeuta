@@ -12,8 +12,6 @@ router.get("/:date", async (req, res) => {
 
     const data = await response.json();
 
-    console.log(data);
-
     if (!data.list) {
       return res.status(400).json({
         error: "Erro na API externa",

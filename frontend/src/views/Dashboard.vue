@@ -58,6 +58,7 @@
 import { ref, onMounted } from "vue";
 import api from "../services/api";
 import { useToast } from "vue-toastification";
+import Swal from 'sweetalert2'
 
 const toast = useToast();
 
@@ -120,19 +121,35 @@ const createConsultation = async () => {
 };
 
 const deleteConsultation = async (id) => {
-  const confirmacao = window.confirm("Deseja cancelar esta consulta?");
-  
-  if (confirmacao) {
+  const result = await Swal.fire({
+    title: 'Cancelar consulta?',
+    text: "Deseja cancelar esta consulta?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Sim, cancelar',
+    cancelButtonText: 'Não, voltar',
+    reverseButtons: true
+  });
+
+  if (result.isConfirmed) {
     try {
       await api.delete(`/consultations/${id}`);
-      toast.success("Consulta cancelada!", {
-        position: "top-right",
-      });
+      
+      Swal.fire(
+        'Cancelada!',
+        'Consulta cancelada com sucesso.',
+        'success'
+      );
+      
       loadConsultations();
     } catch {
-      toast.error("Erro ao cancelar consulta", {
-        position: "top-right",
-      });
+      Swal.fire(
+        'Erro!',
+        'Erro ao cancelar consulta.',
+        'error'
+      );
     }
   }
 };
