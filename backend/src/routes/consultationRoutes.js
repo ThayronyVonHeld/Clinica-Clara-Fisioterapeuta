@@ -1,6 +1,7 @@
 import express from "express";
 import Consultation from "../models/Consultation.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
+import roleMiddleware from "../middlewares/roleMiddleware.js";
 
 const router = express.Router();
 
@@ -32,5 +33,26 @@ router.post("/", authMiddleware, async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+router.get("/", authMiddleware, async (req, res) => {
+  try {
+    const consultations = await Consultation.find({ user: req.user.id });
+
+    res.json(consultations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/all", authMiddleware, roleMiddleware(["secretario"]), async (req, res) => {
+    try {
+      const consultations = await Consultation.find().populate("user", "name email").sort({ date: 1, time: 1 });
+
+      res.json(consultations);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
 
 export default router;
