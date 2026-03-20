@@ -19,7 +19,7 @@ app.use(express.json());
 // Rotas
 app.use("/users", userRoutes);
 app.use("/consultations", protect, consultationRoutes);
-app.use("/address", protect, addressRoutes);
+app.use("/address", addressRoutes);
 app.use("/weather", protect, weatherRoutes);
 
 app.get("/", (req, res) => {
