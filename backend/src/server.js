@@ -13,7 +13,10 @@ connectDB();
 
 const app = express(); 
 
-app.use(cors());
+app.use(cors({
+ orign:
+   "https://clinica-clara-fisioterapeuta.vercel.app/"
+}));
 app.use(express.json());
 
 // Rotas
