@@ -200,7 +200,10 @@ button:active {
 @media (max-width: 768px) {
   .left {
     display: none;
-  }
+  flex: 0 0 60%;
+  background: url("/frontend/src/assets/LogoClara.png") no-repeat center;
+  background-size: cover;
+}
 
   .right {
     flex: 0 0 100%;
